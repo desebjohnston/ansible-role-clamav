@@ -174,16 +174,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform:
+          - debian10-systemd
+          - debian11-systemd
+          - debian12-systemd
+          - debian13-systemd
+          - kali-systemd
+          - fedora38-systemd
+          - fedora39-systemd
+          - ubuntu-20-systemd
+          - ubuntu-22-systemd
         scenario:
-          - debian
-          - debian_additional_flags
-          - debian_modify_config
-          - fedora
-          - fedora_additional_flags
-          - fedora_modify_config
-          - ubuntu
-          - ubuntu_additional_flags
-          - ubuntu_modify_config
+          - default
+          - additional_flags
+          - modify_config
     steps:
       - id: harden-runner
         name: Harden the runner
@@ -216,7 +220,9 @@ jobs:
       # scenarios since the instances that GitHub Actions gives us are
       # not able to handle testing everything at once.
       - name: Run molecule tests
-        run: molecule test --scenario-name ${{ matrix.scenario }}
+        run: >-
+          molecule test --platform-name ${{ matrix.platform }}
+          --scenario-name ${{ matrix.scenario }}
       - name: Setup tmate debug session
         uses: mxschmitt/action-tmate@v3
         if: env.RUN_TMATE
