@@ -16,10 +16,7 @@ def test_packages(host):
     """Test that the appropriate packages were installed."""
     distribution = host.system_info.distribution
     if distribution in ["fedora"]:
-        if host.system_info.release == "38":
-            pkgs = ["clamav", "clamav-freshclam"]
-        else:
-            pkgs = ["clamav", "clamav-update"]
+        pkgs = ["clamav", "clamav-freshclam"]
     elif distribution in ["debian", "kali", "ubuntu"]:
         pkgs = ["clamav-daemon"]
     else:
