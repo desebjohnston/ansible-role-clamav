@@ -1,0 +1,34 @@
+- name: Install ClamAV from package URL with apt
+  ansible.builtin.apt:
+    deb: "{{ clamav_linux_package_url }}"
+    state: present
+  when: ansible_pkg_mgr == "apt"
+
+- name: Install ClamAV from package URL with yum
+  ansible.builtin.yum:
+    name: "{{ clamav_linux_package_url }}"
+    state: present
+  when: ansible_pkg_mgr == "yum"
+
+- name: Install CalmAV from package URL with dnf
+  ansible.builtin.dnf:
+    name: "{{ clamav_linux_package_url }}"
+    state: present
+    disable_gpg_check: true
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Create "{{ freshclam_configuration_path | dirname }}" if it does not exist
+  ansible.builtin.file:
+    path: "{{ freshclam_configuration_path | dirname }}"
+    state: directory
+    mode: '0755'
+
+- name: "Copy freshclam.conf to {{ freshclam_configuration_path }}"
+  ansible.builtin.template:
+    src: freshclam.conf.j2
+    dest: "{{ freshclam_configuration_path }}"
+    backup: true
+    force: true
+    owner: root
+    group: root
+  when: not clamav_install_from_package_manager

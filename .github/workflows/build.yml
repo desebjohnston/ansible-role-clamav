@@ -197,6 +197,7 @@ jobs:
           - default
           - additional_flags
           - modify_config
+          - package_install
     steps:
       - id: harden-runner
         name: Harden the runner

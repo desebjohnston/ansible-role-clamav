@@ -11,10 +11,22 @@
       paths:
         - "{{ role_path }}/vars"
 
-- name: Install ClamAV packages
+- name: Install package dependencies with package manager
   ansible.builtin.package:
-    name: "{{ package_names }}"
+    name: "{{ dependencies }}"
     state: present
+  when: dependencies is defined
+
+- name: Install ClamAV packages with package manager
+  ansible.builtin.package:
+    name: "{{ clamav_packages }}"
+    state: present
+  when: clamav_install_from_package_manager
+
+- name: Install ClamAV from package url
+  ansible.builtin.include_tasks:
+    file: install_from_package.yml
+  when: not clamav_install_from_package_manager
 
 - name: Install shell script to be run by cron
   ansible.builtin.template:
