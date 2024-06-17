@@ -1,4 +1,4 @@
-"""Module containing the tests for the default scenario."""
+"""Module containing the tests for the package_install scenario."""
 
 # Standard Python Libraries
 import os
@@ -29,9 +29,7 @@ def test_clamscan_executable_present(host):
     assert host.exists("clamscan")
 
 
-@pytest.mark.parametrize(
-    "service,is_enabled", [("clamav-freshclam", True)]
-)
+@pytest.mark.parametrize("service,is_enabled", [("clamav-freshclam", True)])
 def test_services_debian(host, service, is_enabled):
     """Test that the expected services were enabled or disabled as intended."""
     if host.system_info.distribution in ["debian", "kali", "ubuntu"]:
@@ -39,9 +37,7 @@ def test_services_debian(host, service, is_enabled):
         assert svc.is_enabled == is_enabled
 
 
-@pytest.mark.parametrize(
-    "service,is_enabled", [("clamav-freshclam", True)]
-)
+@pytest.mark.parametrize("service,is_enabled", [("clamav-freshclam", True)])
 def test_services_fedora(host, service, is_enabled):
     """Test that the expected services were enabled or disabled as intended."""
     if host.system_info.distribution in ["fedora"]:
