@@ -102,6 +102,16 @@
   when:
     - ansible_selinux.status == "enabled"
 
+- name: Load tasks file for systemd setup
+  ansible.builtin.include_tasks:
+    file: setup_systemd.yml
+  when: ansible_service_mgr == "systemd"
+
+- name: Load tasks file for manual setup
+  ansible.builtin.include_tasks:
+    file: setup_manual.yml
+  when: ansible_service_mgr != "systemd"
+
 - name: Ensure configuration for freshclam
   ansible.builtin.include_tasks:
     file: configure.yml
@@ -133,16 +143,6 @@
     path: "{{ clamav_scan_quarantine_directory }}"
     state: directory
   when: clamav_scan_copy or clamav_scan_move | bool
-
-- name: Load tasks file for systemd setup
-  ansible.builtin.include_tasks:
-    file: setup_systemd.yml
-  when: ansible_service_mgr == "systemd"
-
-- name: Load tasks file for manual setup
-  ansible.builtin.include_tasks:
-    file: setup_manual.yml
-  when: ansible_service_mgr != "systemd"
 
 - name: Wait for new signatures to be downloaded and installed by freshclam
   ansible.builtin.wait_for:
