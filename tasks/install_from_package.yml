@@ -4,14 +4,14 @@
     state: present
   when: ansible_pkg_mgr == "apt"
 
-- name: Install CalmAV from package URL with dnf
+- name: Install ClamAV from package URL with dnf
   ansible.builtin.dnf:
     name: "{{ clamav_linux_package_url }}"
     state: present
     disable_gpg_check: true
   when: ansible_pkg_mgr == "dnf"
 
-- name: "If it does no exist, create the directory: {{ freshclam_configuration_path | dirname }}"
+- name: "If it does not exist, create the directory: {{ freshclam_configuration_path | dirname }}"
   ansible.builtin.file:
     path: "{{ freshclam_configuration_path | dirname }}"
     state: directory
