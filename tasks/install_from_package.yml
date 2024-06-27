@@ -11,13 +11,13 @@
     disable_gpg_check: true
   when: ansible_pkg_mgr == "dnf"
 
-- name: "If it does not exist, create the directory: {{ freshclam_configuration_path | dirname }}"
+- name: Create the directory {{ freshclam_configuration_path | dirname }}
   ansible.builtin.file:
     path: "{{ freshclam_configuration_path | dirname }}"
     state: directory
     mode: '0755'
 
-- name: "Copy freshclam.conf to {{ freshclam_configuration_path }}"
+- name: Copy freshclam.conf to {{ freshclam_configuration_path }}
   ansible.builtin.template:
     src: freshclam.conf.j2
     dest: "{{ freshclam_configuration_path }}"
