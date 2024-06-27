@@ -4,12 +4,6 @@
     state: present
   when: ansible_pkg_mgr == "apt"
 
-- name: Install ClamAV from package URL with yum
-  ansible.builtin.yum:
-    name: "{{ clamav_linux_package_url }}"
-    state: present
-  when: ansible_pkg_mgr == "yum"
-
 - name: Install CalmAV from package URL with dnf
   ansible.builtin.dnf:
     name: "{{ clamav_linux_package_url }}"
