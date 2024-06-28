@@ -23,7 +23,7 @@
     state: present
   when: clamav_install_from_package_manager
 
-- name: Install ClamAV from package url
+- name: Install ClamAV from package URL
   ansible.builtin.include_tasks:
     file: install_from_package.yml
   when: not clamav_install_from_package_manager
